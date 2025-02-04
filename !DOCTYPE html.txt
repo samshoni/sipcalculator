@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIP Calculator</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .container { max-width: 400px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; }
+        label { display: block; margin-top: 10px; }
+        input, button { width: 100%; padding: 10px; margin-top: 10px; }
+        .result { margin-top: 20px; padding: 10px; border: 1px solid #4CAF50; background: #e8f5e9; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>SIP Calculator</h2>
+        <label for="sipAmount">Monthly SIP Amount ($):</label>
+        <input type="number" id="sipAmount" placeholder="Enter amount">
+
+        <label for="years">Investment Duration (Years):</label>
+        <input type="number" id="years" placeholder="Enter duration">
+
+        <label for="rate">Expected Rate of Return (%):</label>
+        <input type="number" id="rate" placeholder="Enter rate">
+
+        <label for="inflation">Expected Inflation Rate (%):</label>
+        <input type="number" id="inflation" placeholder="Enter inflation rate">
+
+        <button onclick="calculateSIP()">Calculate</button>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function calculateSIP() {
+            let sipAmount = parseFloat(document.getElementById('sipAmount').value);
+            let years = parseFloat(document.getElementById('years').value);
+            let rate = parseFloat(document.getElementById('rate').value) / 100 / 12;
+            let inflation = parseFloat(document.getElementById('inflation').value) / 100 / 12;
+            let months = years * 12;
+
+            // Without Inflation
+            let finalAmount = 0;
+            for (let i = 0; i < months; i++) {
+                finalAmount = (finalAmount + sipAmount) * (1 + rate);
+            }
+
+            // With Inflation
+            let inflationAdjustedAmount = 0;
+            for (let i = 0; i < months; i++) {
+                inflationAdjustedAmount = (inflationAdjustedAmount + sipAmount) * (1 + rate - inflation);
+            }
+
+            document.getElementById('result').innerHTML =
+                `<b>Total Value (without Inflation):</b> $${finalAmount.toFixed(2)}<br>
+                 <b>Total Value (with Inflation):</b> $${inflationAdjustedAmount.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>
